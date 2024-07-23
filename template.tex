@@ -1,0 +1,146 @@
+%% template.tex
+% 
+% LaTeX template for the 2024 International Astronautical Congress 
+% of the International Astronautical Federation (IAF). This template
+% has been written based on the official IAC 2024 Microsoft Word 
+% conference paper template, which can be found here:
+%   https://www.iafastro.org/assets/files/events/iac/2024/IAC%202024%20Manuscript_Template.doc
+%
+%%%%%%%%%%%%%%%%
+
+\documentclass{iac}
+
+\addbibresource{references.bib}
+
+\begin{document}
+
+\IACconference{75}
+\IAClocation{Milan, Italy}
+\IACdates{14-18 October}
+\IACyear{2024}
+\IACpapernumber{A.1.2.3}
+\IACcopyright{2024}{the International Astronautical Federation (IAF)}
+
+\title{Manuscript Template and Style Guide (Title of Your Paper)}
+
+\IACauthor*{Eva Y.-W. Chang}{Department of Tourism and Hospitality, China University of Science and Technology, 200 Chunghwa Street, Henshan Village, Hsinchu County, Taiwan 31241}{eva77tw@cc.hc.cust.edu.tw}
+\IACauthor{Rock J.-S. Chern}{Department of Aerospace Engineering, Ryerson University, 350 Victoria Street, Toronto, Ontario, Canada M5B 2K3}{editor-in-chief@iaamail.org}
+
+\abstract{A one paragraph abstract of no more than 400 words must be included at the beginning of the manuscript. It should be a summary and complete in itself (no references to the main body of the manuscript). The abstract should indicate the subjects dealt with within the full text and should state the objectives of the investigation. Newly-observed facts and conclusions of the experiment or argument discussed in the full text must be stated in this summary. Readers should not have to read the full text to understand the abstract. The abstract can be an updated version of the one submitted at the call-for-abstracts but its contents must not differ substantially.}
+
+\maketitle
+
+\section*{Nomenclature}
+
+This section is not numbered. A nomenclature section could be provided when there are mathematical symbols in your paper. Superscripts and subscripts must be listed separately. Nomenclature definitions should not appear again in the text.
+
+\section*{Acronyms/Abbreviations}
+
+This section is not numbered. Define acronyms and abbreviations that are not standard in this section. Such acronyms and abbreviations that are unavoidable in the abstract must be defined at their first mention there. Ensure consistency of abbreviations throughout the article. Always use the full title followed by the acronym (abbreviation) to be used, e.g., reusable suborbital launch vehicle (RSLV), International Space Station (ISS).
+
+\section{Introduction}
+
+Section headings are in \textbf{bold} and placed flush on the left hand margin of the column.
+The Introduction Section is to state the objectives of the work, provide an adequate background including a brief literature survey, major differences from the others, and sectional organization of this paper. Avoid a too detailed and lengthy literature survey and a summary of the results.
+Divide your paper into clearly defined and numbered sections numbered 1., 2., …. Subsections should be numbered 1.1 (then 1.1.1, 1.1.2, ...), 1.2, etc. Use this numbering also for internal cross-referencing: do not just refer to “the text”. Any subsection may be given a brief heading. Each heading should appear on its own separate line. 
+
+\subsection{Subsection headings}
+Subsection headings are in italics and placed flush on the left hand margin of the column.
+
+\subsubsection{Sub-subsection headings}
+Sub-subsection headings are in italics and placed flush on the left hand margin of the column.
+
+\section{Materials and methods}
+
+Provide sufficient detail to allow the work to be reproduced. Methods already published should be indicated by a reference: only relevant modifications should be described.
+
+\section{Theory and calculation}
+
+A Theory section should extend, not repeat, the background to the article already dealt with in the Introduction and lay the foundation for further work. In contrast, a Calculation section represents a practical development from a theoretical basis.
+
+\subsection{Equation numbers}
+
+Number consecutively any equations that have to be displayed separately from the text (if referred to explicitly in the text). The numbers identifying the equations should be placed in parentheses to the right of the equation. For example:
+
+\begin{equation}
+    \vect{F}_g = -G\frac{m*m_E}{R_E^2}\vect{i}_r = m\vect{g}_{ta}
+\end{equation}
+
+\subsection{Figure numbers}
+
+Ensure that each figure/illustration has a title. All figures/illustrations must be numbered and cited (see \autoref{fig:SpaceShipTwo carried under White Knight Two}) in the text consecutively. Place figures/ illustrations as close as possible to the first references to them in the manuscript. Restrict them to single-column width unless this would make them illegible (then extend these figures/illustrations across two columns or place them to the end of your paper). 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{figures/SpaceShipTwo.jpg}
+    \caption{SpaceShipTwo carried under White Knight Two}
+    \label{fig:SpaceShipTwo carried under White Knight Two}
+\end{figure}
+
+\subsection{Tables}
+
+Tables can be placed either next to the relevant text in the article, or on separate page(s) at the end. Number and cite (as shown in \autoref{tab:Major data of the orbits of Venus, Earth, Mars and Jupiter}) tables consecutively in accordance with their appearance in the text. Place table title above and any remarks below the table body. 
+
+\begin{table}[H]
+\caption{Major data of the orbits of Venus, Earth, Mars and Jupiter}
+\label{tab:Major data of the orbits of Venus, Earth, Mars and Jupiter}
+\centering
+\begin{tabular}{lllll}
+\thickhline
+           & Venus   & Earth & Mars  & Jupiter \\ \hline
+M/ME       & 0.82    & 1     & 0.11  & 317.89  \\ 
+e          & 0.007   & 0.017 & 0.093 & 0.048   \\
+R (AU*)    & 0.7233  & 1     & 1.524 & 5.203   \\
+i (deg)    & 3.40    & 0     & 1.85  & 1.30    \\
+T (years)  & 0.62    & 1     & 1.88  & 11.86   \\ \thickhline
+\multicolumn{5}{l}{* AU =   Astronomical Unit}
+\end{tabular}
+\end{table}
+
+Tables with a moderate amount of information should be positioned within one column. Tables, figures or pictures with large amounts of information or size may extend across two columns.
+
+\subsection{Page numbers}
+
+Indicate page number at the bottom of each page.
+
+\section{Results}
+
+Results should be clear and concise.
+
+\section{Discussion}
+
+This should explore the significance of the results of the work, not repeat them. A combined Results and Discussion section is often appropriate. Avoid extensive citations and discussion of published literature.
+
+\section{Conclusions}
+
+The main conclusions of the study may be presented in a short Conclusions section, which may stand alone or form a subsection of a Discussion or Results and Discussion section.
+
+\section{Acknowledgements}
+
+This section is not numbered. 
+
+\section*{Appendix A (Title)}
+
+This section is not numbered. 
+
+\section*{Appendix B (Title)}
+
+This section is not numbered. 
+
+\section*{Etc.}
+
+This section is not numbered. 
+
+\section*{References}
+
+\subsection*{In the text}
+
+Indicate references by number(s) in square brackets in line with the text. The actual authors can be referred to, but the reference number(s) must always be given. 
+
+\subsection*{List of references}
+
+Example: “..... as demonstrated \cite{geer2010art,chang2015space,strunk2000elements,mettam2009prepare}. Mack \cite{mack2015virgin} obtained a different result ....”
+
+\printbibliography[heading=none]
+
+\end{document}
