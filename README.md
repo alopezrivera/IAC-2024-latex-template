@@ -9,6 +9,5 @@ Bibliography and citation style: IEEE (BibLaTeX: `style=ieee, citestyle=numeric-
 Feel free to use or modify this template, but consider it to be distributed under the
 LaTeX Project Public License.
 
-# Look
-![IAC_2024_template-1](https://github.com/user-attachments/assets/77d2e7c6-3094-457b-8b17-ad6270ae8d0e)
-![IAC_2024_template-2](https://github.com/user-attachments/assets/60f278be-c402-4a19-80e4-74fb777634ee)
+![IAC_2024_template-1](https://github.com/user-attachments/assets/77d2e7c6-3094-457b-8b17-ad6270ae8d0e)             |  ![IAC_2024_template-2](https://github.com/user-attachments/assets/60f278be-c402-4a19-80e4-74fb777634ee)
+:-------------------------:|:-------------------------:
