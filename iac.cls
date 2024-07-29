@@ -12,7 +12,8 @@
 % and version 1.3c or later is part of all distributions of LaTeX
 % version 2008 or later.
 %
-% This work consists of the file iac.cls.
+% This work consists of this class file, iac.cls, and the template
+% files template.tex and references.bib.
 %%%%%%%%%%%%%%%%
 
 %====================================
