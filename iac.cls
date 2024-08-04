@@ -319,9 +319,10 @@
         \begin{center}
             \bfseries Abstract
         \end{center}
-        \vspace*{-0.8em} % Adjust the space after paragraphs
-        \setlength{\parindent}{0.5cm} % 正文首行缩进
-        \setlength{\parskip}{0pt} % single spacing
+        \vspace*{-0.8em} % Adjust the space after paragraphs        
+        \setlength{\parindent}{0.5cm} % Indent the first line of text
+        \setlength{\parskip}{0pt} % Single spacing
+        
         #1
     }
 }
