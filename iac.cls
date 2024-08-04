@@ -313,7 +313,17 @@
 }
 
 % Abstract
-\renewcommand{\abstract}[1]{\def\iac@abstract{#1}}
+\renewcommand{\abstract}[1]{
+    \def\iac@abstract{
+        \vspace*{-2 em} % Adjust the space before paragraphs
+        \begin{center}
+            \bfseries Abstract
+        \end{center}
+        \vspace*{-0.8em} % Adjust the space after paragraphs
+        \setlength{\parskip}{0pt} % single spacing
+        #1
+    }
+}
 
 % Conference details
 \newcommand*{\IACconference}[1]{\def\iac@conference{#1}}\IACconference{}
