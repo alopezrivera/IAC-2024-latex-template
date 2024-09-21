@@ -31,12 +31,14 @@
 % 
 %====================================
 
+
+
 \RequirePackage{kvoptions}
 
 \DeclareStringOption[ieee]{bibstyle}        % Citation style
-\DeclareStringOption[english]{language}     % Language
-\DeclareBoolOption{unicode}                 % Unicode
-\DeclareBoolOption{placeins}                % Prevent floats from skipping sections
+\DeclareBoolOption{lockfloats}              % Prevent floats from skipping sections
+\DeclareBoolOption{flushbottom}             % Align columns at the bottom of the page
+\DeclareBoolOption{fnsymbols}              % Symbolic footnotes
 \ProcessKeyvalOptions*\relax
 
 % Pass unknown to article class
@@ -94,10 +96,13 @@
 % 
 %====================================
 
+
 \RequirePackage{etoolbox}                               % Internals for class programming
 \RequirePackage{xcolor}                                 % Colors
 \RequirePackage{graphicx}                               % Graphics
 \RequirePackage{booktabs}                               % Improved tables
+\RequirePackage{adjustbox}                              % Adjust width of tables
+\RequirePackage{multirow}                               % Multirow cells in tables
 \RequirePackage{fancyhdr}                               % Header and footer settings
 \RequirePackage{lastpage}                               % Reference total number of pages in document
 \RequirePackage[                                        % Title settings
@@ -114,6 +119,11 @@
 ]{ulem}
 \RequirePackage{float}                                  % [H] for figures and tables
 \RequirePackage{microtype}                              % Microtypographic adjustments to save space
+\ifiac@lockfloats
+    \RequirePackage[
+        section
+    ]{placeins}                                         % Prevent floating environments from drifting beyond their sections
+\fi
 
 % Math typesetting
 \RequirePackage{amsmath}
@@ -121,16 +131,19 @@
 \RequirePackage{amstext}
 \RequirePackage{amsfonts}
 \RequirePackage{bm}
+\RequirePackage{mathtools}
 
 % Math structures
 \RequirePackage{array}                                  % Arrays
 \RequirePackage{empheq}                                 % Grouped equations
 \RequirePackage{amsthm}                                 % Theorems
 \RequirePackage{thmtools}                               % List of theorems
+\RequirePackage[ruled]{algorithm2e}                     % Algorithms
+\RequirePackage[short]{optidef}                         % Optimization problems
 
 % Math and scientific symbols and utilities
 \RequirePackage{siunitx}                                % Units
-\sisetup{detect-all}
+\sisetup{detect-all, output-exponent-marker=\ensuremath{\mathrm{e}}}
 \RequirePackage[                                        % Chemistry typesetting
     version=4
 ]{mhchem}
@@ -158,6 +171,9 @@
 \RequirePackage[bottom]{footmisc}                       % Footnotes
 \RequirePackage{enotez}
 
+% Other
+\RequirePackage{kantlipsum}                             % Kantian lorem ipsum
+
 %====================================
 % 
 %          Text formatting
@@ -171,6 +187,7 @@
 \renewcommand*{\equationautorefname}{Eq.}
 \renewcommand*{\figureautorefname}{Fig.}
 \renewcommand*{\tableautorefname}{Table}
+\renewcommand*{\algorithmautorefname}{Algorithm}
 \providecommand*{\listingautorefname}{Listing}
 
 % Captions
@@ -186,6 +203,16 @@
     labelsep=period
 }
 
+% Footnotes
+\newcounter{symbolfootnote}
+\NewDocumentCommand{\symbolfootnote}{ O{2} m }{%
+    \setcounter{symbolfootnote}{\value{footnote}}%
+    \renewcommand*{\thefootnote}{\fnsymbol{footnote}}%
+    \footnote[#1]{#2}%
+    \setcounter{footnote}{\value{symbolfootnote}}%
+    \renewcommand*{\thefootnote}{\arabic{footnote}}%
+}
+
 %====================================
 % 
 %          Body typesetting
@@ -199,22 +226,30 @@
 % Bibliography
 % \DeclareFieldFormat{labelnumberwidth}{\mkbibbrackets{#1}}
 
+% Align colunms at bottom of page
+\ifiac@flushbottom
+    % Increase paragraph skip glue
+    \setlength{\parskip}{1ex plus 2ex}
+    % Align colums
+    \AtBeginDocument{\flushbottom}%
+\fi
+
 % Sections
 \titleformat{\section}
     {\normalfont\bfseries}
     {\arabic{section}.~}
     {0pt}
-    {#1}
+    {\raggedright#1}
 \titleformat{\subsection}
     {\normalfont\itshape}
     {\arabic{section}.\arabic{subsection}~}
     {0pt}
-    {#1}
+    {\raggedright#1}
 \titleformat{\subsubsection}
     {\normalfont\itshape}
     {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}~}
     {0pt}
-    {#1}
+    {\raggedright#1}
 
 % Tables
 \newcommand{\thickhline}{%
@@ -222,28 +257,31 @@
     \futurelet \reserved@a \@xhline
 }
 \newcolumntype{"}{@{\hskip\tabcolsep\vrule width 1pt\hskip\tabcolsep}}
+% Increase line separation to make room for exponents in table entries
+\renewcommand{\arraystretch}{1.2}
 
-% Footnotes
-\newcommand*{\fnsymbolsingle}[1]{%
-    \ensuremath{%
-    \ifcase#1%
-        \or *%
-        \or \dagger
-        \or \ddagger
-        \or \mathsection
-        \or \mathparagraph
-        \else
-          \@ctrerr
-    \fi
-    }%
-}
-
-\newalphalph{\fnsymbolmult}[mult]{\fnsymbolsingle}{}
-\renewcommand*{\thefootnote}{%
-    \fnsymbolmult{\value{footnote}}%
-}
-
-\def\tagform@#1{\maketag@@@{[#1]\@@italiccorr}}
+% Footnotes with symbols
+\ifiac@fnsymbols
+    \newcommand*{\fnsymbolsingle}[1]{%
+        \ensuremath{%
+        \ifcase#1%
+            \or \dagger
+            \or \ddagger
+            \or \mathsection
+            \or \mathparagraph
+            \else
+              \@ctrerr
+        \fi
+        }%
+    }
+    
+    \newalphalph{\fnsymbolmult}[mult]{\fnsymbolsingle}{}
+    \renewcommand*{\thefootnote}{%
+        \fnsymbolmult{\value{footnote}}%
+    }
+    
+    \def\tagform@#1{\maketag@@@{[#1]\@@italiccorr}}
+\fi
 
 % URLs
 \renewcommand\UrlFont{\ttfamily}
@@ -287,6 +325,21 @@
 \DeclareMathOperator{\diff}{\mathop{}\!{d}}
 \DeclareMathOperator{\conv}{\ast}
 
+% Paired delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\let\oldceil\ceil
+\def\ceil{\@ifstar{\oldceil}{\oldceil*}}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\let\oldnorm\norm
+\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+
+% Accents
+\newcommand{\olsi}[1]{\,\overline{\!{#1}}} % overline short italic
+\newcommand{\ols}[1]{\mskip.5\thinmuskip\overline{\mskip-.5\thinmuskip {#1} \mskip-.5\thinmuskip}\mskip.5\thinmuskip} % overline short
+
 % Equation spacing
 \g@addto@macro\normalsize{%
   \setlength\abovedisplayskip{2.5pt}%
@@ -295,13 +348,20 @@
   \setlength\belowdisplayshortskip{7.5pt}%
 }
 
+% Units
+\DeclareSIUnit{\rad}{rad}
+
+% Algorithms
+\setlength\algoheightrule{2pt}
+\setlength\algotitleheightrule{1pt}
+
 %====================================
 % 
 %            IAC specifics
 % 
 %====================================
 
-% Author count
+% Author
 \newcounter{authcount}
 \newcounter{contactauthor}
 \NewDocumentCommand{\IACauthor}{ s m m m }{%
@@ -319,7 +379,7 @@
         \begin{center}
             \bfseries Abstract
         \end{center}
-        \vspace*{-0.8em} % Adjust the space after paragraphs        
+        \vspace*{-0.8em} % Adjust the space after paragraphs
         \setlength{\parindent}{0.5cm} % Indent the first line of text
         \setlength{\parskip}{0pt} % Single spacing
         
@@ -328,16 +388,52 @@
 }
 
 % Conference details
-\newcommand*{\IACconference}[1]{\def\iac@conference{#1}}\IACconference{}
-\newcommand*{\IAClocation}[1]{\def\iac@location{#1}}\IAClocation{}
-\newcommand*{\IACdates}[1]{\def\iac@dates{#1}}\IACdates{}
-\newcommand*{\IACyear}[1]{\def\iac@year{#1}}\IACyear{}
+\NewDocumentCommand{\IACconference}{m}{\def\iac@conference{#1}}
+\NewDocumentCommand{\IAClocation}{m}{\def\iac@location{#1}}
+\NewDocumentCommand{\IACdates}{m}{\def\iac@dates{#1}}
+\NewDocumentCommand{\IACyear}{m}{\def\iac@year{#1}}
 
 % Paper details
-\newcommand*{\IACpapernumber}[1]{\def\iac@papernumber{#1}}\IACpapernumber{}
+\newcommand*{\IACpapernumber}[1]{\def\iac@papernumber{#1}}
 
-% Copyright statement
-\newcommand{\IACcopyright}[2]{\def\iac@copyright{Copyright \copyright\,#1 by #2. All rights reserved.}}
+% Defaults
+\IACconference{XX}
+\IAClocation{City, Country}
+\IACdates{dd-dd Month}
+\IACyear{\the\year}
+\IACpapernumber{XX-XXXXX}
+
+%====================================
+% 
+%            Copyright
+% 
+%====================================
+
+% Copyright Form A (Copyright held by the IAF)
+\NewDocumentCommand{\IACcopyrightA}{ m m }{\def\iac@copyright{%
+    Copyright \copyright\,#1 by International Astronautical Federation. All rights reserved.%
+}}
+% Copyright Form B (Copyright held, work licensed to IAF)
+% Copyright Form B1 (Copyright retained by the author)
+% Copyright Form B2 (Copyright retained by the author’s organisation)
+\NewDocumentCommand{\IACcopyrightB}{ m m }{\def\iac@copyright{%
+    Copyright \copyright\,#1 by #2. Published by the IAF, with permission and released to the IAF to publish in all forms.%
+}}
+% Copyright Form C (Authors employed by Government Agencies)
+\NewDocumentCommand{\IACcopyrightD}{ m m m }{\def\iac@copyright{%
+    Copyright \copyright\,#1 by the International Astronautical Federation. All rights reserved. One or more authors of this work are employees of the #2, which may preclude the work from being subject to copyright in #3, in which event no copyright is asserted in that country.%
+}}
+% Custom Copyright Form (the copyright form should be preliminarily agreed with IAF Secretariat)
+\NewDocumentCommand{\IACcopyrightCustom}{ s o }{\IfValueTF{#2}{%
+    \def\iac@copyright{#2}%
+}{%
+    \IfBooleanTF{#1}{}{
+        \PackageWarning{iac}{The custom copyright form should be preliminarily agreed with IAF Secretariat. To ignore this warning - use \IACcopyrightCustom*}%
+    }
+    \def\iac@copyright{Copyright notice: this paper is subject to a special copyright statement. For more information - please contact the main author.}%
+}}
+
+\newcommand\iac@makecopyright{{\iac@copyright}}
 
 %====================================
 % 
@@ -437,7 +533,7 @@
                 \stepcounter{authnum}%
                 \parbox{0.75em}{\normalfont\selectfont\textsuperscript{\alph{authnum}}}\csuse{iac@affiliation\theauthnum},~\uline{\csuse{iac@email\theauthnum}}\par
             }%
-        \parbox{0.75em}{\textsuperscript{*}}Corresponding author
+        \parbox{0.75em}{\normalfont\selectfont\textsuperscript{\kern-1pt$\conv$}}Corresponding author
     }%
 
     \vskip 1em%
